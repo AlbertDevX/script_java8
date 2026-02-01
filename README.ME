@@ -1,74 +1,57 @@
 # 🚀 Java 8 Auto-Installer (64-bit) for Windows 11
 
-![Java](https://img.shields.io/badge/Java-8-007396?style=for-the-badge&logo=java&logoColor=white) ![Windows](https://img.shields.io/badge/Windows-11-0078D6?style=for-the-badge&logo=windows&logoColor=white) ![PowerShell](https://img.shields.io/badge/PowerShell-5.1-5391FE?style=for-the-badge&logo=powershell&logoColor=white) ![License](https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Stable-brightgreen?style=for-the-badge)
+![Java](https://img.shields.io/badge/Java-8-007396?style=for-the-badge&logo=java&logoColor=white)
+![Windows](https://img.shields.io/badge/Windows-11-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![PowerShell](https://img.shields.io/badge/PowerShell-5.1-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
+![License](https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge)
 
-**La solución definitiva para automatizar la implementación de Java 8 en entornos modernos de Windows.**
-
-[Documentación](#-tabla-de-contenidos) • [Prerrequisitos](#-prerrequisitos) • [Uso](#-uso) • [Solución de Problemas](#-solución-de-problemas)
+Script de PowerShell que automatiza la descarga e instalación completa de Java 8 en Windows 11.
 
 ---
 
 ## 📋 Tabla de Contenidos
 
-* [🎯 Descripción](#-descripción)
-* [✨ Características](#-características)
-* [⚙️ Prerrequisitos](#-prerrequisitos)
-* [📥 Instalación](#-instalación)
-* [🚀 Uso](#-uso)
-* [📝 Ejemplos](#-ejemplos)
-* [✅ Verificación](#-verificación)
-* [🛠️ Solución de Problemas](#-solución-de-problemas)
-* [❓ FAQ](#-preguntas-frecuentes-faq)
-* [📄 Licencia](#-licencia)
+* [Descripción](#descripción)
+* [Características](#características)
+* [Prerrequisitos](#prerrequisitos)
+* [Instalación](#instalación)
+* [Verificación](#verificación)
+* [Solución de Problemas](#solución-de-problemas)
 
 ---
 
 ## 🎯 Descripción
 
-Este **Script de PowerShell** ha sido diseñado para eliminar la fricción en la configuración de entornos de desarrollo. Automatiza la descarga, instalación silenciosa y configuración global de **Java 8 (64-bit)** específicamente optimizado para **Windows 11**. Olvídate de buscar instaladores en sitios externos o configurar manualmente el registro del sistema.
-
----
+Este script automatiza la instalación silenciosa de Java 8 (64-bit). Está diseñado para configurar el entorno de desarrollo en segundos, manejando la descarga oficial y las variables del sistema de forma automática.
 
 ## ✨ Características
 
-* ✅ **Descarga automática:** Conexión directa con servidores oficiales.
-* ✅ **Instalación silenciosa:** Proceso en segundo plano sin asistentes.
-* ✅ **Variables de Entorno:** Configuración de `JAVA_HOME` y `Path`.
-* ✅ **Verificación Inteligente:** Detecta instalaciones previas automáticamente.
-* ✅ **Arquitectura 64-bit:** Exclusivo para sistemas x64 modernos.
-* ✅ **Limpieza:** Eliminación de archivos temporales tras la ejecución.
-
----
+* ✅ **Automatizado:** Descarga directa e instalación sin intervención.
+* ✅ **Configuración:** Setea `JAVA_HOME` y actualiza el `Path` automáticamente.
+* ✅ **Seguro:** Limpia archivos temporales tras la instalación.
+* ✅ **Inteligente:** Detecta versiones previas instaladas.
 
 ## ⚙️ Prerrequisitos
 
-Para garantizar el éxito de la instalación, verifique los siguientes puntos:
-
-* **Sistema:** Windows 11 (64-bit).
-* **PowerShell:** Versión 5.1 o superior.
-* **Permisos:** Ejecución con privilegios de **Administrador**.
-* **Internet:** Conexión estable para la descarga (~200MB).
+* Windows 11 (64-bit).
+* PowerShell 5.1 o superior.
+* Ejecución con permisos de **Administrador**.
+* Conexión a Internet activa.
 
 ---
 
 ## 📥 Instalación
 
-### 1. Crear el script
-Cree un archivo llamado `InstalarJava8.ps1` y pegue el código del script.
-
-### 2. Ejecutar como administrador
-1.  Presione `Win + X`.
-2.  Seleccione **Terminal (Administrador)**.
-
-### 3. Ejecutar comandos
-Copie y pegue lo siguiente en su terminal:
+1. **Guardar el archivo:** Crea un archivo llamado `InstalarJava8.ps1`.
+2. **Abrir Terminal:** Ejecuta PowerShell como Administrador.
+3. **Ejecutar comandos:**
 
 ```powershell
-# Acceder a la carpeta del script
-cd "C:\ruta\de\tu\archivo"
+# Acceder a la ruta del archivo
+cd "C:\ruta\de\tu\script"
 
-# Habilitar permisos de ejecución
+# Habilitar permisos
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-# Iniciar instalación
+# Correr instalador
 .\InstalarJava8.ps1
