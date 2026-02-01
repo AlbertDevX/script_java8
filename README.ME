@@ -1,0 +1,80 @@
+# 🚀 Java 8 Auto-Installer (64-bit) for Windows 11
+
+<div align="center">
+
+![Java](https://img.shields.io/badge/Java-8-007396?style=for-the-badge&logo=java&logoColor=white)
+![Windows](https://img.shields.io/badge/Windows-11-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![PowerShell](https://img.shields.io/badge/PowerShell-5.1-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
+![License](https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Stable-brightgreen?style=for-the-badge)
+
+**La solución definitiva para automatizar la implementación de Java 8 en entornos modernos de Windows.**
+
+[Documentación](#-tabla-de-contenidos) • [Prerrequisitos](#⚙️-prerrequisitos) • [Uso](#-uso) • [Solución de Problemas](#️-solución-de-problemas)
+
+</div>
+
+---
+
+## 📋 Tabla de Contenidos
+- [🎯 Descripción](#-descripción)
+- [✨ Características](#-características)
+- [⚙️ Prerrequisitos](#️-prerrequisitos)
+- [📥 Instalación](#-instalación)
+- [🚀 Uso](#-uso)
+- [📝 Ejemplos](#-ejemplos)
+- [✅ Verificación](#-verificación)
+- [🛠️ Solución de Problemas](#️-solución-de-problemas)
+- [❓ Preguntas Frecuentes (FAQ)](#-preguntas-frecuentes-faq)
+- [📞 Soporte](#-soporte)
+- [📄 Licencia](#-licencia)
+
+---
+
+## 🎯 Descripción
+Este **Script de PowerShell** ha sido diseñado para eliminar la fricción en la configuración de entornos de desarrollo. Automatiza la descarga, instalación silenciosa y configuración global de **Java 8 (64-bit)** específicamente optimizado para **Windows 11**. Olvídate de buscar instaladores en sitios externos o configurar manualmente el registro del sistema.
+
+---
+
+## ✨ Características
+- ✅ **Descarga automática:** Conexión directa con servidores oficiales para obtener el binario más reciente.
+- ✅ **Instalación silenciosa:** Proceso en segundo plano sin interrupciones ni asistentes de instalación.
+- ✅ **Variables de Entorno:** Configuración automática de `JAVA_HOME` y actualización del `Path`.
+- ✅ **Verificación Inteligente:** Detecta si Java ya reside en el sistema antes de proceder.
+- ✅ **Arquitectura 64-bit:** Optimizado exclusivamente para sistemas modernos.
+- ✅ **Limpieza Post-Instalación:** Eliminación automática de archivos `.exe` o `.msi` temporales para ahorrar espacio.
+
+---
+
+## ⚙️ Prerrequisitos
+Para garantizar el éxito de la instalación, verifique los siguientes puntos:
+- **Sistema:** Windows 11 (Arquitectura de 64 bits).
+- **PowerShell:** Versión 5.1 o superior.
+- **Permisos:** Ejecución con privilegios de **Administrador**.
+- **Internet:** Conexión estable para la descarga del paquete (~200MB).
+- **Espacio:** Mínimo 200MB de espacio libre en disco.
+
+---
+
+## 📥 Instalación
+
+### Paso 1: Crear el script
+Cree un archivo de texto, pegue el código del script y guárdelo con el nombre:
+> `InstalarJava8.ps1`
+
+### Paso 2: Ejecutar como administrador
+Es imperativo abrir la consola con permisos elevados:
+1. Presione `Win + X`.
+2. Seleccione **Terminal (Administrador)** o **PowerShell (Administrador)**.
+
+### Paso 3: Ejecutar script
+Navegue a la ubicación del archivo y ejecute:
+```powershell
+# Cambiar directorio
+cd "C:\ruta\de\tu\archivo"
+
+# Habilitar políticas de ejecución (si es necesario)
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# Lanzar instalador
+.\InstalarJava8.ps1
