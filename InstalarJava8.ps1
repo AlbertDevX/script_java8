@@ -1,7 +1,6 @@
 <#
-.SYNOPSIS
-    Instalador Automático de Java 8 JDK (64-bit) para Windows 11.
-    Versión compatible con Bypass de Seguridad Oracle 2026.
+    Instalador Automático de Java 8 JDK (64-bit)
+    Versión: 2.0 (UTF-8 Optimized)
 #>
 
 $ProgressPreference = 'SilentlyContinue'
@@ -12,9 +11,7 @@ function Show-Welcome {
     Clear-Host
     Write-Host "=============================================================" -ForegroundColor Cyan
     Write-Host "    JAVA JDK 8 - PROFESSIONAL AUTO-INSTALLER                 " -ForegroundColor Cyan
-    Write-Host "       Compatible con Windows 11 - Build 2026                " -ForegroundColor Cyan
     Write-Host "=============================================================" -ForegroundColor Cyan
-    Write-Host ""
 }
 
 function Test-Admin {
@@ -26,7 +23,6 @@ function Test-Admin {
 function Set-Environment {
     Write-Host " [OK] Configurando variables de entorno..." -ForegroundColor Cyan
     $jdkPath = Get-ChildItem "C:\Program Files\Java\jdk1.8*" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    
     if ($jdkPath) {
         $fullPath = $jdkPath.FullName
         $binPath = Join-Path $fullPath "bin"
@@ -36,7 +32,7 @@ function Set-Environment {
             $newPath = "$binPath;" + $oldPath
             [Environment]::SetEnvironmentVariable("Path", $newPath, "Machine")
         }
-        Write-Host " [V] Entorno configurado: JAVA_HOME -> $fullPath" -ForegroundColor Green
+        Write-Host " [V] JAVA_HOME configurado en: $fullPath" -ForegroundColor Green
     }
 }
 
@@ -47,15 +43,13 @@ function Start-Installation {
         return
     }
 
-    Write-Host " [>] Descargando JDK 8... (Esto puede tardar)" -ForegroundColor Cyan
+    Write-Host " [>] Descargando JDK 8... (Simulando Navegador)" -ForegroundColor Cyan
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        
-        $webClient = New-Object System.Net.WebClient
-        $webClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
-        $webClient.Headers.Add("Cookie", "oraclelicense=accept-securebackup-cookie")
-        $webClient.DownloadFile($JDK8_Url, $InstallerPath)
-        
+        $wc = New-Object System.Net.WebClient
+        $wc.Headers.Add("User-Agent", "Mozilla/5.0")
+        $wc.Headers.Add("Cookie", "oraclelicense=accept-securebackup-cookie")
+        $wc.DownloadFile($JDK8_Url, $InstallerPath)
         Write-Host " [V] Descarga exitosa." -ForegroundColor Green
     } catch {
         Write-Host " [X] Error en descarga: $($_.Exception.Message)" -ForegroundColor Red
@@ -76,7 +70,7 @@ function Start-Installation {
     }
 
     Write-Host "=============================================================" -ForegroundColor Cyan
-    Write-Host " PROCESO FINALIZADO - REINICIA TU TERMINAL" -ForegroundColor Green
+    Write-Host " PROCESO FINALIZADO" -ForegroundColor Green
     Write-Host "=============================================================" -ForegroundColor Cyan
     Read-Host " Presiona Enter para salir"
 }
