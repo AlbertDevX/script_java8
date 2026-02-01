@@ -1,19 +1,18 @@
 <#
-    JDK 8 Installer - Eclipse Temurin (Adoptium)
-    Versión: 2.5 - 2026 Edition
-    Sin errores 403 - API OpenSource Certificada
+    JDK 8 Professional Installer - Eclipse Temurin (Adoptium)
+    Versión: 2.6 - Fix Error 1620
 #>
 
 $ProgressPreference = 'SilentlyContinue'
-$JDK8_Url = "https://api.adoptium.net/v3/binary/latest/8/ga/windows/x64/jdk/hotspot/normal/eclipse?project=jdk"
-$InstallerPath = Join-Path $env:TEMP "Temurin8_Setup_x64.msi"
+$JDK8_Url = "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u402-b06/OpenJDK8U-jdk_x64_windows_hotspot_8u402b06.msi"
+$InstallerPath = Join-Path $env:TEMP "Temurin8_Setup.msi"
 
 function Show-Header {
     Clear-Host
     Write-Host "  _____________________________________________________________  " -ForegroundColor Cyan
     Write-Host " |                                                             | " -ForegroundColor Cyan
     Write-Host " |       JAVA JDK 8 - ADOPTIUM TEMURIN INSTALLER               | " -ForegroundColor Cyan
-    Write-Host " |         AlbertDevX Open-Source Deployment                   | " -ForegroundColor Cyan
+    Write-Host " |       AlbertDevX Open-Source Deployment                     | " -ForegroundColor Cyan
     Write-Host " |_____________________________________________________________| " -ForegroundColor Cyan
     Write-Host ""
 }
@@ -25,16 +24,12 @@ function Set-JavaPath {
     if ($jdkFolder) {
         $fullPath = $jdkFolder.FullName
         $binPath = Join-Path $fullPath "bin"
-
         [Environment]::SetEnvironmentVariable("JAVA_HOME", $fullPath, "Machine")
         $currentPath = [Environment]::GetEnvironmentVariable("Path", "Machine")
-        
         if ($currentPath -notlike "*$binPath*") {
-            $newPath = "$binPath;" + $currentPath
-            [Environment]::SetEnvironmentVariable("Path", $newPath, "Machine")
+            [Environment]::SetEnvironmentVariable("Path", "$binPath;$currentPath", "Machine")
         }
-        Write-Host " [✓] JAVA_HOME definido en: $fullPath" -ForegroundColor Green
-        Write-Host " [✓] Binarios agregados al Path del sistema." -ForegroundColor Green
+        Write-Host " [✓] Entorno configurado: $fullPath" -ForegroundColor Green
     }
 }
 
@@ -44,39 +39,35 @@ function Main {
         Write-Host " [X] ERROR: Debes ejecutar como ADMINISTRADOR." -ForegroundColor Red; return
     }
 
-    Write-Host " [↓] Descargando JDK 8 (Temurin) desde Adoptium API..." -ForegroundColor Cyan
+    Write-Host " [↓] Descargando JDK 8 (Temurin)..." -ForegroundColor Cyan
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         Invoke-WebRequest -Uri $JDK8_Url -OutFile $InstallerPath -UserAgent "Mozilla/5.0"
-        Write-Host " [✓] Descarga completada exitosamente." -ForegroundColor Green
+        
+        if (!(Test-Path $InstallerPath)) { throw "El archivo no se guardo correctamente." }
+        Write-Host " [✓] Descarga completada." -ForegroundColor Green
     } catch {
         Write-Host " [X] Error en descarga: $($_.Exception.Message)" -ForegroundColor Red; return
     }
 
-    Write-Host " [⚙] Iniciando instalacion desatendida..." -ForegroundColor Cyan
+    Write-Host " [⚙] Iniciando instalacion desatendida (MSI)..." -ForegroundColor Cyan
     try {
-        $msiArgs = @(
-            "/i", "`"$InstallerPath`"",
-            "/qn",
-            "ADDLOCAL=FeatureMain,FeatureEnvironment,FeatureJarFileRunWith,FeatureJavaHome",
-            "INSTALLDIR=`"C:\Program Files\Eclipse Adoptium\jdk-8`""
-        )
-        $proc = Start-Process -FilePath "msiexec.exe" -ArgumentList $msiArgs -Wait -PassThru
+        $process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/i", "`"$InstallerPath`"", "/qn", "ADDLOCAL=FeatureMain,FeatureEnvironment,FeatureJarFileRunWith,FeatureJavaHome" -Wait -PassThru
         
-        if ($proc.ExitCode -eq 0) {
+        if ($process.ExitCode -eq 0) {
             Write-Host " [✓] JDK 8 instalado correctamente." -ForegroundColor Green
             Set-JavaPath
         } else {
-            Write-Host " [X] El instalador devolvio el codigo: $($proc.ExitCode)" -ForegroundColor Red
+            Write-Host " [X] Error del instalador: $($process.ExitCode). Reintenta manualmente." -ForegroundColor Red
         }
     } catch {
-        Write-Host " [X] Error durante la instalacion: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host " [X] Error: $($_.Exception.Message)" -ForegroundColor Red
     } finally {
         if (Test-Path $InstallerPath) { Remove-Item $InstallerPath -Force }
     }
 
     Write-Host "`n=============================================================" -ForegroundColor Cyan
-    Write-Host " INSTALACION EXITOSA - REINICIA TU CONSOLA" -ForegroundColor Green
+    Write-Host " PROCESO FINALIZADO" -ForegroundColor Green
     Write-Host "=============================================================" -ForegroundColor Cyan
     Read-Host " Presiona Enter para finalizar"
 }
