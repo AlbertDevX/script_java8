@@ -8,9 +8,8 @@
     Requisito: Ejecutar como Administrador.
 #>
 
-# --- Configuración de Estilo ---
 $ProgressPreference = 'SilentlyContinue'
-$JDK8_Url = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248242_ce59cff5c23f4e2eaf4e778a117d4c5b" # Enlace directo JRE/JDK dinámico
+$JDK8_Url = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248242_ce59cff5c23f4e2eaf4e778a117d4c5b"
 $InstallerPath = Join-Path $env:TEMP "JDK8_Setup_x64.exe"
 
 function Show-Welcome {
