@@ -49,7 +49,6 @@ function Main {
 
     Write-Host " [>] Instalando JDK de forma silenciosa..." -ForegroundColor Cyan
     try {
-        # Instalación MSI desatendida
         $proc = Start-Process -FilePath "msiexec.exe" -ArgumentList "/i", "`"$InstallerPath`"", "/qn", "ADDLOCAL=FeatureMain,FeatureEnvironment,FeatureJarFileRunWith,FeatureJavaHome" -Wait -PassThru
         if ($proc.ExitCode -eq 0) {
             Write-Host " [V] Amazon Corretto instalado exitosamente." -ForegroundColor Green
