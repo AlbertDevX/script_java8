@@ -26,7 +26,7 @@ function Show-AestheticHeader {
     $Cyan = "Cyan"; $White = "White"; $Green = "Green"
     Write-Host "  _____________________________________________________________  " -ForegroundColor $Cyan
     Write-Host " |                                                             | " -ForegroundColor $Cyan
-    Write-Host " |    JAVA JDK 8 - PROFESSIONAL ULTIMATE INSTALLER             | " -ForegroundColor $Cyan
+    Write-Host " |        ADXTOOLS | TOOL FOR INSTALL JAVA JDK 8                | " -ForegroundColor $Cyan
     Write-Host " |         AlbertDevX Open-Source Script Code                  | " -ForegroundColor $Cyan
     Write-Host " |_____________________________________________________________| " -ForegroundColor $Cyan
     Write-Host ""
