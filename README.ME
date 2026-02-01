@@ -17,6 +17,7 @@
 ---
 
 ## 📋 Tabla de Contenidos
+
 - [🎯 Descripción](#-descripción)
 - [✨ Características](#-características)
 - [⚙️ Prerrequisitos](#️-prerrequisitos)
@@ -32,48 +33,52 @@
 ---
 
 ## 🎯 Descripción
+
 Este **Script de PowerShell** ha sido diseñado para eliminar la fricción en la configuración de entornos de desarrollo. Automatiza la descarga, instalación silenciosa y configuración global de **Java 8 (64-bit)** específicamente optimizado para **Windows 11**. Olvídate de buscar instaladores en sitios externos o configurar manualmente el registro del sistema.
 
 ---
 
 ## ✨ Características
-- ✅ **Descarga automática:** Conexión directa con servidores oficiales para obtener el binario más reciente.
-- ✅ **Instalación silenciosa:** Proceso en segundo plano sin interrupciones ni asistentes de instalación.
-- ✅ **Variables de Entorno:** Configuración automática de `JAVA_HOME` y actualización del `Path`.
-- ✅ **Verificación Inteligente:** Detecta si Java ya reside en el sistema antes de proceder.
-- ✅ **Arquitectura 64-bit:** Optimizado exclusivamente para sistemas modernos.
-- ✅ **Limpieza Post-Instalación:** Eliminación automática de archivos `.exe` o `.msi` temporales para ahorrar espacio.
+
+* ✅ **Descarga automática:** Conexión directa con servidores oficiales para obtener el binario más reciente.
+* ✅ **Instalación silenciosa:** Proceso en segundo plano sin interrupciones ni asistentes.
+* ✅ **Variables de Entorno:** Configuración automática de `JAVA_HOME` y actualización del `Path`.
+* ✅ **Verificación Inteligente:** Detecta si Java ya reside en el sistema antes de proceder.
+* ✅ **Arquitectura 64-bit:** Optimizado exclusivamente para sistemas modernos.
+* ✅ **Limpieza Post-Instalación:** Eliminación automática de archivos temporales.
 
 ---
 
 ## ⚙️ Prerrequisitos
+
 Para garantizar el éxito de la instalación, verifique los siguientes puntos:
-- **Sistema:** Windows 11 (Arquitectura de 64 bits).
-- **PowerShell:** Versión 5.1 o superior.
-- **Permisos:** Ejecución con privilegios de **Administrador**.
-- **Internet:** Conexión estable para la descarga del paquete (~200MB).
-- **Espacio:** Mínimo 200MB de espacio libre en disco.
+
+* **Sistema:** Windows 11 (Arquitectura de 64 bits).
+* **PowerShell:** Versión 5.1 o superior.
+* **Permisos:** Ejecución con privilegios de **Administrador**.
+* **Internet:** Conexión estable para la descarga del paquete (~200MB).
+* **Espacio:** Mínimo 200MB de espacio libre en disco.
 
 ---
 
 ## 📥 Instalación
 
-### Paso 1: Crear el script
-Cree un archivo de texto, pegue el código del script y guárdelo con el nombre:
-> `InstalarJava8.ps1`
+### 1. Crear el script
+Cree un archivo de texto, pegue el código del script y guárdelo con el nombre: `InstalarJava8.ps1`
 
-### Paso 2: Ejecutar como administrador
+### 2. Ejecutar como administrador
 Es imperativo abrir la consola con permisos elevados:
-1. Presione `Win + X`.
-2. Seleccione **Terminal (Administrador)** o **PowerShell (Administrador)**.
+1.  Presione `Win + X`.
+2.  Seleccione **Terminal (Administrador)** o **PowerShell (Administrador)**.
 
-### Paso 3: Ejecutar script
-Navegue a la ubicación del archivo y ejecute:
+### 3. Ejecutar script
+Navegue a la ubicación del archivo y ejecute los siguientes comandos:
+
 ```powershell
-# Cambiar directorio
+# Cambiar directorio a donde está el script
 cd "C:\ruta\de\tu\archivo"
 
-# Habilitar políticas de ejecución (si es necesario)
+# Habilitar políticas de ejecución para el usuario actual
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 # Lanzar instalador
