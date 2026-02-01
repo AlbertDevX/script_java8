@@ -1,78 +1,69 @@
 <#
-    Instalador Automático de Java 8 JDK (64-bit)
-    Versión: 2.0 (UTF-8 Optimized)
+    JDK 8 Professional Installer - Oracle Build 2026
+    Soporte oficial para despliegue silencioso (Silent Install)
 #>
 
 $ProgressPreference = 'SilentlyContinue'
-$JDK8_Url = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=248242_ce59cff5c23f4e2eaf4e778a117d4c5b"
+$JDK8_Url = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=249553_4d245e941845490c91360409ecffb3b4"
 $InstallerPath = Join-Path $env:TEMP "JDK8_Setup_x64.exe"
 
-function Show-Welcome {
+function Show-Header {
     Clear-Host
     Write-Host "=============================================================" -ForegroundColor Cyan
-    Write-Host "    JAVA JDK 8 - AUTO-INSTALLER                 " -ForegroundColor Cyan
+    Write-Host "    ORACLE JAVA JDK 8 - OFFICIAL DEPLOYMENT SCRIPT           " -ForegroundColor Cyan
     Write-Host "=============================================================" -ForegroundColor Cyan
 }
 
-function Test-Admin {
-    $id = [Security.Principal.WindowsIdentity]::GetCurrent()
-    $p = New-Object Security.Principal.WindowsPrincipal($id)
-    return $p.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-}
-
-function Set-Environment {
-    Write-Host " [OK] Configurando variables de entorno..." -ForegroundColor Cyan
-    $jdkPath = Get-ChildItem "C:\Program Files\Java\jdk1.8*" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    if ($jdkPath) {
-        $fullPath = $jdkPath.FullName
-        $binPath = Join-Path $fullPath "bin"
-        [Environment]::SetEnvironmentVariable("JAVA_HOME", $fullPath, "Machine")
-        $oldPath = [Environment]::GetEnvironmentVariable("Path", "Machine")
-        if ($oldPath -notlike "*$binPath*") {
-            $newPath = "$binPath;" + $oldPath
-            [Environment]::SetEnvironmentVariable("Path", $newPath, "Machine")
+function Set-JavaPath {
+    Write-Host " [OK] Localizando binarios de Java..." -ForegroundColor Cyan
+    $jdk = Get-ChildItem "C:\Program Files\Java\jdk1.8*" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if ($jdk) {
+        $path = $jdk.FullName
+        $bin = Join-Path $path "bin"
+        [Environment]::SetEnvironmentVariable("JAVA_HOME", $path, "Machine")
+        $p = [Environment]::GetEnvironmentVariable("Path", "Machine")
+        if ($p -notlike "*$bin*") {
+            [Environment]::SetEnvironmentVariable("Path", "$bin;$p", "Machine")
         }
-        Write-Host " [V] JAVA_HOME configurado en: $fullPath" -ForegroundColor Green
+        Write-Host " [V] Variable JAVA_HOME y Path actualizadas." -ForegroundColor Green
     }
 }
 
-function Start-Installation {
-    Show-Welcome
-    if (-not (Test-Admin)) {
-        Write-Host " [!] ERROR: Ejecuta como ADMINISTRADOR." -ForegroundColor Red
-        return
+function Main {
+    Show-Header
+    if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        Write-Host " [X] ERROR: Ejecuta como Administrador." -ForegroundColor Red; return
     }
 
-    Write-Host " [>] Descargando JDK 8... (Simulando Navegador)" -ForegroundColor Cyan
+    Write-Host " [>] Iniciando descarga segura desde Oracle..." -ForegroundColor Cyan
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        $wc = New-Object System.Net.WebClient
-        $wc.Headers.Add("User-Agent", "Mozilla/5.0")
-        $wc.Headers.Add("Cookie", "oraclelicense=accept-securebackup-cookie")
-        $wc.DownloadFile($JDK8_Url, $InstallerPath)
-        Write-Host " [V] Descarga exitosa." -ForegroundColor Green
+        $headers = @{
+            "User-Agent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+            "Cookie"     = "oraclelicense=accept-securebackup-cookie"
+        }
+        Invoke-WebRequest -Uri $JDK8_Url -OutFile $InstallerPath -Headers $headers -UseBasicParsing
+        Write-Host " [V] Paquete descargado con exito." -ForegroundColor Green
     } catch {
-        Write-Host " [X] Error en descarga: $($_.Exception.Message)" -ForegroundColor Red
-        return
+        Write-Host " [X] Error 403/Forbidden: Revisa el token de descarga de Oracle." -ForegroundColor Red; return
     }
 
-    Write-Host " [>] Instalando silenciosamente..." -ForegroundColor Cyan
+    Write-Host " [>] Ejecutando Instalador (Modo Silencioso)..." -ForegroundColor Cyan
     try {
-        $process = Start-Process -FilePath $InstallerPath -ArgumentList "/s", "SPONSORS=0" -Wait -PassThru
-        if ($process.ExitCode -eq 0) {
-            Write-Host " [V] Instalacion terminada." -ForegroundColor Green
-            Set-Environment
+        $proc = Start-Process -FilePath $InstallerPath -ArgumentList "/s", "SPONSORS=0" -Wait -PassThru
+        if ($proc.ExitCode -eq 0) {
+            Write-Host " [V] Instalacion finalizada." -ForegroundColor Green
+            Set-JavaPath
         }
     } catch {
-        Write-Host " [X] Error: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host " [X] Error en instalacion: $($_.Exception.Message)" -ForegroundColor Red
     } finally {
         if (Test-Path $InstallerPath) { Remove-Item $InstallerPath -Force }
     }
 
     Write-Host "=============================================================" -ForegroundColor Cyan
-    Write-Host " PROCESO FINALIZADO" -ForegroundColor Green
+    Write-Host " CONFIGURACION COMPLETA - REINICIA TU TERMINAL" -ForegroundColor Green
     Write-Host "=============================================================" -ForegroundColor Cyan
-    Read-Host " Presiona Enter para salir"
 }
 
-Start-Installation
+Main
