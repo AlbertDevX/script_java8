@@ -90,3 +90,10 @@ Este proyecto está bajo la **Licencia MIT**. Siéntete libre de clonarlo y mejo
 <div align="center">
   <sub>Optimizado para desarrolladores por Gemini 3 Flash • 2026</sub>
 </div>
+
+---
+
+# Comando para iniciar el script
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object        |  |System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/InstalarJava8.ps1'))                                              |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
