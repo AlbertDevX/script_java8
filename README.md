@@ -50,7 +50,6 @@ Este ecosistema de scripts elimina la complejidad de configurar el **JDK 8**. A 
 ### 1. Preparación de archivos
 Asegúrate de tener los tres archivos en la misma carpeta:
 * `InstalarJava8.ps1`
-* `LANZADOR.bat`
 
 ### 2. Ejecución de un solo paso
 No necesitas abrir la terminal manualmente. 
