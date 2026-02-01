@@ -10,7 +10,7 @@ $InstallerPath = Join-Path $env:TEMP "JDK8_Setup_x64.exe"
 function Show-Welcome {
     Clear-Host
     Write-Host "=============================================================" -ForegroundColor Cyan
-    Write-Host "    JAVA JDK 8 - PROFESSIONAL AUTO-INSTALLER                 " -ForegroundColor Cyan
+    Write-Host "    JAVA JDK 8 - AUTO-INSTALLER                 " -ForegroundColor Cyan
     Write-Host "=============================================================" -ForegroundColor Cyan
 }
 
