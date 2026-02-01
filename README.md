@@ -98,4 +98,4 @@ Este proyecto está bajo la **Licencia MIT**. Siéntete libre de clonarlo y mejo
 Si prefieres no descargar archivos manualmente, puedes ejecutar la instalación completa directamente desde la nube. Copia y pega el siguiente comando en tu **PowerShell (Administrador)**:
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $s = Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/AlbertDevX/script_java8/main/InstalarJava8.ps1'; iex ([System.Text.Encoding]::UTF8.GetString([System.Text.Encoding]::GetEncoding("ISO-8859-1").GetBytes($s)))
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $wc = New-Object System.Net.WebClient; $wc.Encoding = [System.Text.Encoding]::UTF8; iex $wc.DownloadString("https://raw.githubusercontent.com/AlbertDevX/script_java8/main/InstalarJava8.ps1?v=$(Get-Date -Ticks)")
