@@ -1,22 +1,25 @@
 <#
-    JDK 8 Professional Installer - Oracle Build 2026
-    Soporte oficial para despliegue silencioso (Silent Install)
+    JDK 8 Installer - Amazon Corretto Edition
+    Fuente: Amazon Services
+    Optimizado para: Windows 11 / 2026
 #>
 
 $ProgressPreference = 'SilentlyContinue'
-$JDK8_Url = "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=249553_4d245e941845490c91360409ecffb3b4"
-$InstallerPath = Join-Path $env:TEMP "JDK8_Setup_x64.exe"
+$JDK8_Url = "https://corretto.aws/downloads/latest/amazon-corretto-8-x64-windows-jdk.msi"
+$InstallerPath = Join-Path $env:TEMP "Corretto8_Setup_x64.msi"
 
 function Show-Header {
     Clear-Host
     Write-Host "=============================================================" -ForegroundColor Cyan
-    Write-Host "    ORACLE JAVA JDK 8 - OFFICIAL DEPLOYMENT SCRIPT           " -ForegroundColor Cyan
+    Write-Host "    JAVA JDK 8 - AMAZON CORRETTO AUTO-INSTALLER              " -ForegroundColor Cyan
+    Write-Host "    Official OpenJDK Distribution - Secure & Stable          " -ForegroundColor Cyan
     Write-Host "=============================================================" -ForegroundColor Cyan
 }
 
 function Set-JavaPath {
-    Write-Host " [OK] Localizando binarios de Java..." -ForegroundColor Cyan
-    $jdk = Get-ChildItem "C:\Program Files\Java\jdk1.8*" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    Write-Host " [OK] Verificando variables de entorno..." -ForegroundColor Cyan
+    $jdk = Get-ChildItem "C:\Program Files\Amazon Corretto\jdk1.8*" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    
     if ($jdk) {
         $path = $jdk.FullName
         $bin = Join-Path $path "bin"
@@ -25,7 +28,7 @@ function Set-JavaPath {
         if ($p -notlike "*$bin*") {
             [Environment]::SetEnvironmentVariable("Path", "$bin;$p", "Machine")
         }
-        Write-Host " [V] Variable JAVA_HOME y Path actualizadas." -ForegroundColor Green
+        Write-Host " [V] JAVA_HOME definido en: $path" -ForegroundColor Green
     }
 }
 
@@ -35,24 +38,21 @@ function Main {
         Write-Host " [X] ERROR: Ejecuta como Administrador." -ForegroundColor Red; return
     }
 
-    Write-Host " [>] Iniciando descarga segura desde Oracle..." -ForegroundColor Cyan
+    Write-Host " [>] Descargando Amazon Corretto 8 (OpenJDK)..." -ForegroundColor Cyan
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        $headers = @{
-            "User-Agent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-            "Cookie"     = "oraclelicense=accept-securebackup-cookie"
-        }
-        Invoke-WebRequest -Uri $JDK8_Url -OutFile $InstallerPath -Headers $headers -UseBasicParsing
-        Write-Host " [V] Paquete descargado con exito." -ForegroundColor Green
+        Invoke-WebRequest -Uri $JDK8_Url -OutFile $InstallerPath -UserAgent "Mozilla/5.0"
+        Write-Host " [V] Descarga completada desde AWS." -ForegroundColor Green
     } catch {
-        Write-Host " [X] Error 403/Forbidden: Revisa el token de descarga de Oracle." -ForegroundColor Red; return
+        Write-Host " [X] Error en descarga: $($_.Exception.Message)" -ForegroundColor Red; return
     }
 
-    Write-Host " [>] Ejecutando Instalador (Modo Silencioso)..." -ForegroundColor Cyan
+    Write-Host " [>] Instalando JDK de forma silenciosa..." -ForegroundColor Cyan
     try {
-        $proc = Start-Process -FilePath $InstallerPath -ArgumentList "/s", "SPONSORS=0" -Wait -PassThru
+        # Instalación MSI desatendida
+        $proc = Start-Process -FilePath "msiexec.exe" -ArgumentList "/i", "`"$InstallerPath`"", "/qn", "ADDLOCAL=FeatureMain,FeatureEnvironment,FeatureJarFileRunWith,FeatureJavaHome" -Wait -PassThru
         if ($proc.ExitCode -eq 0) {
-            Write-Host " [V] Instalacion finalizada." -ForegroundColor Green
+            Write-Host " [V] Amazon Corretto instalado exitosamente." -ForegroundColor Green
             Set-JavaPath
         }
     } catch {
@@ -62,7 +62,7 @@ function Main {
     }
 
     Write-Host "=============================================================" -ForegroundColor Cyan
-    Write-Host " CONFIGURACION COMPLETA - REINICIA TU TERMINAL" -ForegroundColor Green
+    Write-Host " PROCESO COMPLETADO - REINICIA TU TERMINAL" -ForegroundColor Green
     Write-Host "=============================================================" -ForegroundColor Cyan
 }
 
